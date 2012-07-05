@@ -40,7 +40,7 @@ en:
       done: "Done"
       in_progress: "In Progress"
       backlog: "Backlog"
-      icebox: "Chilly Bin"
+      icebox: "Root Cellar"
 
   registrations:
     edit:
