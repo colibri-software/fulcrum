@@ -127,12 +127,28 @@ class Story < ActiveRecord::Base
     title
   end
 
+  def iteration
+    return nil unless self.accepted?
+    start_date = self.project.start_date
+    first_iteration_start = start_date
+    project_iter_start_day = self.project.iteration_start_day
+    first_iter_wday = first_iteration_start.wday
+    if first_iter_wday < project_iter_start_day
+      first_iter_wday += 7
+    end
+    first_iteration_start -= ( first_iter_wday - project_iter_start_day )
+
+    days_since_start = self.accepted_at - first_iteration_start
+    weeks_since_start = days_since_start.to_i / 7
+    weeks_since_start / self.project.iteration_length + 1
+  end
+
   def to_csv
     [
       id,                       # Id
       title,                    # Story
       labels,                   # Labels
-      nil,                      # Iteration
+      iteration,                # Iteration
       nil,                      # Iteration Start
       nil,                      # Iteration End
       story_type,               # Story Type
